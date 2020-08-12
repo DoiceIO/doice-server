@@ -1,0 +1,28 @@
+{
+  "name": "playspace-sfu",
+  "version": "1.0.0",
+  "description": "The PlaySpace Mediasoup Selective Forwarding Unit",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\"",
+    "serve": "DEBUG=\"mediasoup*\" nodemon app.js",
+    "start": "pm2 start app.js -i max -name=\"SFU-Beta\"",
+    "restart": "pm2 restart all"
+  },
+  "author": "Tryston Perry",
+  "license": "ISC",
+  "dependencies": {
+    "@sentry/node": "^5.15.5",
+    "body-parser": "^1.19.0",
+    "child_process": "^1.0.2",
+    "consola": "^2.12.1",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mediasoup": "^3.5.12",
+    "node-fetch": "^2.6.0",
+    "socket.io": "^2.3.0",
+    "uniqid": "^5.2.0"
+  }
+}
