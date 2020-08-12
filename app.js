@@ -62,11 +62,26 @@ async function main() {
 
   createSocketApp();
 
-  server.listen(process.env.PORT, process.env.IP, () => {
-    consola.success(
-      `Doice server listening on ${process.env.IP}:${process.env.PORT}`
-    );
-  });
+  require("greenlock-express")
+    .init({
+      packageRoot: __dirname,
+      configDir: "./greenlock.d",
+
+      // contact for security and critical bug notices
+      maintainerEmail: "jon@example.com",
+
+      // whether or not to run at cloudscale
+      cluster: false
+    })
+    // Serves on 80 and 443
+    // Get's SSL certificates magically!
+    .serve(server);
+
+  // server.listen(process.env.PORT, process.env.IP, () => {
+  //   consola.success(
+  //     `Doice server listening on ${process.env.IP}:${process.env.PORT}`
+  //   );
+  // });
 }
 
 function createExpressApp() {
