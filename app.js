@@ -72,14 +72,33 @@ async function main() {
 function createExpressApp() {
   console.log("****CREATING EXPRESS APP****");
 
+  app.use((req, res, next) => {
+    // If API method
+    if (/^\/api/.test(req.path)) {
+      next();
+      return;
+    }
+
+    // Check if static file matches path url
+    const path = `${__dirname}/public/${req.path}`;
+
+    // If static file exists, send it
+    if (fs.existsSync(path)) {
+      res.sendFile(path);
+    }
+
+    // If static file doesn't exist, assume it's a SPA url
+    else {
+      res.sendFile(`${__dirname}/public/index.html`);
+    }
+  });
+
   app.use(cors());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
   // Generate routes from /routes/index.js and /rotues/modules
   require("./routes/index.js")({ app, io });
-
-  app.use(express.static(__dirname + "/public", { dotfilex: "allow" }));
 
   console.log("****CREATED EXPRESS APP****");
 }
