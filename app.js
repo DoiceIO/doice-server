@@ -62,32 +62,29 @@ async function main() {
 
   createSocketApp();
 
-  // require("greenlock-express")
-  //   .init({
-  //     packageRoot: __dirname,
-  //     configDir: "./greenlock.d",
+  if (process.env.NODE_ENV === "prod") {
+    require("greenlock-express")
+      .init({
+        packageRoot: __dirname,
+        configDir: "./greenlock.d",
 
-  //     // contact for security and critical bug notices
-  //     maintainerEmail: "jon@example.com",
+        // contact for security and critical bug notices
+        maintainerEmail: process.env.MAINTAINER_EMAIL,
 
-  //     // whether or not to run at cloudscale
-  //     cluster: false
-  //   })
-  //   // Serves on 80 and 443
-  //   // Get's SSL certificates magically!
-  //   .serve(server);
+        // whether or not to run at cloudscale
+        cluster: false
+      })
 
-  server.listen(
-    process.env.PORT || "3000",
-    process.env.IP || "127.0.0.1",
-    () => {
+      // Serves on 80 and 443
+      // Get's SSL certificates magically!
+      .serve(server);
+  } else {
+    server.listen(process.env.PORT, process.env.IP, () => {
       consola.success(
-        `Doice server listening on ${process.env.IP || "127.0.0.1"}:${
-          process.env.PORT || "3000"
-        }`
+        `Doice server listening on ${process.env.IP}:${process.env.PORT}`
       );
-    }
-  );
+    });
+  }
 }
 
 function createExpressApp() {
