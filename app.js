@@ -7,29 +7,10 @@ const cors = require("cors");
 const app = express();
 const Worker = require("./mediasoup/worker");
 const http = require("http");
-const https = require("https");
 const consola = require("consola");
 
-let credentials = {};
-if (process.env.PORT === "443" && process.env.DOMAIN_NAME) {
-  credentials = {
-    key: fs.readFileSync(
-      `/etc/letsencrypt/live/${process.env.DOMAIN_NAME}/privkey.pem`,
-      "utf8"
-    ),
-    cert: fs.readFileSync(
-      `/etc/letsencrypt/live/${process.env.DOMAIN_NAME}/fullchain.pem`,
-      "utf8"
-    )
-  };
-}
-
 // Create http server if not https
-const server =
-  process.env.PORT !== "443"
-    ? http.createServer(app)
-    : https.createServer(credentials, app);
-
+const server = http.createServer(app);
 const io = require("socket.io")(server);
 
 // All workers representing CPU vCores
@@ -62,29 +43,11 @@ async function main() {
 
   createSocketApp();
 
-  if (process.env.NODE_ENV === "prod") {
-    require("greenlock-express")
-      .init({
-        packageRoot: __dirname,
-        configDir: "./greenlock.d",
-
-        // contact for security and critical bug notices
-        maintainerEmail: process.env.MAINTAINER_EMAIL,
-
-        // whether or not to run at cloudscale
-        cluster: false
-      })
-
-      // Serves on 80 and 443
-      // Get's SSL certificates magically!
-      .serve(server);
-  } else {
-    server.listen(process.env.PORT, process.env.IP, () => {
-      consola.success(
-        `Doice server listening on ${process.env.IP}:${process.env.PORT}`
-      );
-    });
-  }
+  server.listen(process.env.PORT, process.env.IP, () => {
+    consola.success(
+      `Doice server listening on ${process.env.IP}:${process.env.PORT}`
+    );
+  });
 }
 
 function createExpressApp() {
