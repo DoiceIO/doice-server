@@ -12,8 +12,8 @@ module.exports = async ({ io }) => {
   const modules = [];
 
   // Get all modules
-  const moduleNames = await fs.promises.readdir(`${__dirname}/modules`);
-  moduleNames.forEach(name => modules.push(require(`./modules/${name}`)));
+  // const moduleNames = await fs.promises.readdir(`${__dirname}/modules`);
+  // moduleNames.forEach(name => modules.push(require(`./modules/${name}`)));
 
   // Get the count of sockets in socket room
   io.getSocketCount = function (roomId) {
