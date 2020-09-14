@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const fs = require("fs");
 const express = require("./express.js");
 const bodyParser = require("body-parser");
@@ -43,15 +41,17 @@ async function main() {
     });
   });
 
+  global.SETTINGS = JSON.parse(fs.readFileSync("settings.json"));
+
   await Worker.createWorkers();
 
   createExpressApp();
 
   createSocketApp();
 
-  server.listen(process.env.PORT, async () => {
+  server.listen(SETTINGS.server.port, async () => {
     consola.success(
-      `Doice server listening on ${process.env.IP}:${process.env.PORT}`
+      `Doice server listening on ${SERVER_IP}:${SETTINGS.server.port}`
     );
   });
 }

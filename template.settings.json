@@ -1,0 +1,47 @@
+{
+  "server": {
+    "port": 3000,
+    "youtube-api-key": ""
+  },
+  "rooms": {
+    "default": {
+      "maxUsers": 24,
+      "password": "",
+      "capture": {
+        "mic": {
+          "enabled": true,
+          "maxBitrate": 128,
+          "maxStreams": 24
+        },
+        "desktop": {
+          "enabled": true,
+          "maxBitrate": 4500,
+          "maxFramerate": 30,
+          "maxWidth": 1280,
+          "maxHeight": 720,
+          "maxStreams": 3
+        },
+        "desktopAudio": {
+          "enabled": true,
+          "maxBitrate": 128
+        },
+        "webcam": {
+          "enabled": true,
+          "maxBitrate": 2000,
+          "maxFramerate": 30,
+          "maxWidth": 1280,
+          "maxHeight": 720,
+          "maxStreams": 9
+        },
+        "player": {
+          "enabled": true,
+          "types": {
+            "youtube": true,
+            "twitch": true,
+            ".mp4": true
+          }
+        }
+      }
+    }
+  }
+}
