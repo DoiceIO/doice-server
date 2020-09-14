@@ -33,10 +33,13 @@ module.exports = ({ io, socket }) => {
         const { videoUrl } = req.body;
 
         // Check if allowed to post more streams
-        if (req.router.$streams.external.length >= 1) {
+        if (
+          req.router.$streams.external.length >=
+          SETTINGS.rooms.default.capture.player.maxStreams
+        ) {
           return {
             ok: false,
-            error: "You have reached the max external streams of 1"
+            error: `Max video players of room ${req.socket.roomId} in ${SETTINGS.rooms.default.capture.player.maxStreams}`
           };
         }
 

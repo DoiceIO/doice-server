@@ -41,7 +41,10 @@ async function main() {
     });
   });
 
-  global.SETTINGS = JSON.parse(fs.readFileSync("settings.json"));
+  global.SETTINGS = {
+    ...JSON.parse(fs.readFileSync("template.settings.json")),
+    ...JSON.parse(fs.readFileSync("settings.json"))
+  };
 
   await Worker.createWorkers();
 

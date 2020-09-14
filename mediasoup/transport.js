@@ -20,9 +20,6 @@ const WEBRTC_TRANSPORT_OPTIONS = {
   preferUdp: true
 };
 
-// Max incoming bitrate (bps)
-const MAX_INCOMING_BITRATE = 12000000;
-
 module.exports = {
   /**
    * Create a new recieve or send Transport
@@ -73,7 +70,9 @@ module.exports = {
 
     // Set the max incoming bitrate (bps)
     try {
-      await transport.setMaxIncomingBitrate(MAX_INCOMING_BITRATE);
+      await transport.setMaxIncomingBitrate(
+        SETTINGS.rooms.default.capture.desktop.maxBitrate
+      );
     } catch (err) {
       return {
         success: false,

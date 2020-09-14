@@ -1,7 +1,8 @@
 {
   "server": {
     "port": 3000,
-    "youtube-api-key": ""
+    "youtube-api-key": "",
+    "admin-password": "admin"
   },
   "rooms": {
     "default": {
@@ -13,7 +14,7 @@
           "maxBitrate": 128,
           "maxStreams": 24
         },
-        "desktop": {
+        "video": {
           "enabled": true,
           "maxBitrate": 4500,
           "maxFramerate": 30,
@@ -21,7 +22,7 @@
           "maxHeight": 720,
           "maxStreams": 3
         },
-        "desktopAudio": {
+        "audio": {
           "enabled": true,
           "maxBitrate": 128
         },
@@ -35,11 +36,7 @@
         },
         "player": {
           "enabled": true,
-          "types": {
-            "youtube": true,
-            "twitch": true,
-            ".mp4": true
-          }
+          "maxStreams": 1
         }
       }
     }
