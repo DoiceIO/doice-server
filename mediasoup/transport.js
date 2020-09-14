@@ -4,12 +4,6 @@ const Consumer = require("./consumer");
 
 const errorBuilder = require("../functions/error-builder");
 
-// Local IP is the device ip on the network
-const { LOCAL_IP } = process.env;
-
-// Remote IP is the public ip address
-const { REMOTE_IP } = process.env;
-
 const EVENTS_LIST = ["newtransport", "close"];
 
 // WebRTC transport options
@@ -17,8 +11,8 @@ const EVENTS_LIST = ["newtransport", "close"];
 const WEBRTC_TRANSPORT_OPTIONS = {
   listenIps: [
     {
-      ip: LOCAL_IP,
-      announcedIp: REMOTE_IP
+      ip: SERVER_IP,
+      announcedIp: SERVER_IP
     }
   ],
   enableUdp: true,

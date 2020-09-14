@@ -37,13 +37,19 @@ global.consumers = new Map();
 main();
 
 async function main() {
+  global.SERVER_IP = await new Promise(resolve => {
+    require("dns").lookup(require("os").hostname(), (err, addr) => {
+      resolve(addr);
+    });
+  });
+
   await Worker.createWorkers();
 
   createExpressApp();
 
   createSocketApp();
 
-  server.listen(process.env.PORT, process.env.IP, () => {
+  server.listen(process.env.PORT, async () => {
     consola.success(
       `Doice server listening on ${process.env.IP}:${process.env.PORT}`
     );
