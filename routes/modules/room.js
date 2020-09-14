@@ -41,6 +41,14 @@ module.exports = ({ io }) => {
         req.socket.username = username;
         req.socket.key = crypto.randomBytes(16).toString("base64");
 
+        if (io.getSocketCount(roomId) >= SETTINGS.rooms.default.maxUsers) {
+          return {
+            ok: false,
+            error: `Max users of ${SETTINGS.rooms.default.maxUsers} in room ${roomId}`,
+            status: 400
+          };
+        }
+
         // Create or join a room by the id
         const router = await Router.getOrCreate(roomId);
 
@@ -108,7 +116,13 @@ module.exports = ({ io }) => {
           data: {
             routerRtpCapabilities,
             streams,
-            room,
+            room: {
+              ...room,
+              SETTINGS: {
+                ...SETTINGS.rooms.default,
+                secret: undefined
+              }
+            },
             key: req.socket.key
           }
         };

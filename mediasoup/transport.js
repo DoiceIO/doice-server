@@ -71,7 +71,7 @@ module.exports = {
     // Set the max incoming bitrate (bps)
     try {
       await transport.setMaxIncomingBitrate(
-        SETTINGS.rooms.default.capture.desktop.maxBitrate
+        SETTINGS.rooms.default.capture.video.maxBitrate * 1000
       );
     } catch (err) {
       return {

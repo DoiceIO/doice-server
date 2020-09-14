@@ -6,8 +6,10 @@
   },
   "rooms": {
     "default": {
-      "maxUsers": 24,
-      "password": "",
+      "maxUsers": 0,
+      "secret": {
+        "password": ""
+      },
       "capture": {
         "mic": {
           "enabled": true,
