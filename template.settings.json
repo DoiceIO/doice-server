@@ -6,7 +6,7 @@
   },
   "rooms": {
     "default": {
-      "maxUsers": 0,
+      "maxUsers": 24,
       "secret": {
         "password": ""
       },
