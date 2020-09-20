@@ -26,6 +26,9 @@ RUN git clone https://github.com/DoiceIO/doice-server \
     && mv dist/* .. \
     && cd .. \
     && rm -rf doice-webapp \
+    && cd .. \
+    && mv doice-server/* .. \
+    && rm -rf doice-server \
     && cd ~
     
 EXPOSE 3000
