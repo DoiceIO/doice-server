@@ -1,16 +1,17 @@
 FROM ubuntu:18.04
 
-RUN apt-get update
-RUN apt-get upgrade
+RUN apt-get update -y
+RUN apt-get upgrade -y
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | -E bash - \
-    apt-get install -y nodejs
-
-# Mediasoup Dependencies
 RUN apt-get install -y \
+    curl \
+    git \
     python \
     clang \
     build-essential
+
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
+RUN apt-get install nodejs -y
 
 # Download doice-server and doice-webapp
 RUN git clone https://github.com/DoiceIO/doice-server \
@@ -26,10 +27,8 @@ RUN git clone https://github.com/DoiceIO/doice-server \
     && cd .. \
     && rm -rf doice-webapp \
     && cd .. \
-    && mv doice-server/* .. \
-    && rm -rf doice-server \
     && cd ~
-    
+
 EXPOSE 3000
 
 CMD cd doice-server && node app.js
