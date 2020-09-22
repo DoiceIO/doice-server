@@ -158,7 +158,7 @@ module.exports = ({ io }) => {
 
         // If max streams of type produced in room
         if (
-          req.room.$streams[type].length >=
+          req.router.$streams[type].length >=
           SETTINGS.rooms.default.capture[type].maxStreams
         ) {
           return {
