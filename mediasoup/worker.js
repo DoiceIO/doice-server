@@ -18,7 +18,9 @@ module.exports = {
     consola.info("****CREATING MEDIASOUP WORKERS****");
     for (let i = 0; i < numWorkers; i++) {
       const worker = await mediasoup.createWorker({
-        logLevel: "debug"
+        logLevel: "debug",
+        rtcMinPort: 10000,
+        rtcMaxPort: 19999
       });
       workers.push(worker);
     }
