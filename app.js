@@ -40,7 +40,7 @@ async function main() {
   //     resolve(addr);
   //   });
   // });
-  global.SERVER_IP = "127.0.0.1";
+  global.SERVER_IP = "0.0.0.0";
 
   global.SETTINGS = {
     ...JSON.parse(fs.readFileSync("template.settings.json"))
