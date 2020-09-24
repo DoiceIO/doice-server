@@ -35,11 +35,12 @@ global.consumers = new Map();
 main();
 
 async function main() {
-  global.SERVER_IP = await new Promise(resolve => {
-    require("dns").lookup(require("os").hostname(), (err, addr) => {
-      resolve(addr);
-    });
-  });
+  // global.SERVER_IP = await new Promise(resolve => {
+  //   require("dns").lookup(require("os").hostname(), (err, addr) => {
+  //     resolve(addr);
+  //   });
+  // });
+  global.SERVER_IP = "127.0.0.1";
 
   global.SETTINGS = {
     ...JSON.parse(fs.readFileSync("template.settings.json"))
