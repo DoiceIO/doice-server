@@ -19,8 +19,8 @@ module.exports = {
     for (let i = 0; i < numWorkers; i++) {
       const worker = await mediasoup.createWorker({
         logLevel: "debug",
-        rtcMinPort: 10000,
-        rtcMaxPort: 19999
+        rtcMinPort: 7000,
+        rtcMaxPort: 8000
       });
       workers.push(worker);
     }

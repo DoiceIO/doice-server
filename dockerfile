@@ -30,6 +30,6 @@ RUN git clone https://github.com/DoiceIO/doice-server \
     && cd ~
 
 EXPOSE 3000
-EXPOSE 10000-19999
+EXPOSE 7000-8000
 
 CMD cd doice-server && node app.js
