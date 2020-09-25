@@ -40,7 +40,7 @@ async function main() {
   //     resolve(addr);
   //   });
   // });
-  global.SERVER_IP = "0.0.0.0";
+  global.SERVER_IP = "127.0.0.1";
 
   global.SETTINGS = {
     ...JSON.parse(fs.readFileSync("template.settings.json"))
@@ -53,7 +53,7 @@ async function main() {
 
   createSocketApp();
 
-  server.listen(SETTINGS.server.port, "0.0.0.0", () => {
+  server.listen(SETTINGS.server.port, () => {
     consola.success(
       `Doice server listening on 127.0.0.1:${SETTINGS.server.port}`
     );
