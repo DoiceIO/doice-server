@@ -53,7 +53,7 @@ async function main() {
 
   createSocketApp();
 
-  server.listen(SETTINGS.server.port, () => {
+  server.listen(SETTINGS.server.port, "0.0.0.0", () => {
     consola.success(
       `Doice server listening on 127.0.0.1:${SETTINGS.server.port}`
     );
