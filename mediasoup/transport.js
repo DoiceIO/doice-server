@@ -11,7 +11,7 @@ const EVENTS_LIST = ["newtransport", "close"];
 const WEBRTC_TRANSPORT_OPTIONS = {
   listenIps: [
     {
-      ip: "0.0.0.0",
+      ip: "127.0.0.1",
       announcedIp: ""
     }
   ],
