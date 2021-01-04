@@ -100,9 +100,9 @@ async function main() {
       res.sendFile(__dirname + "/initial-setup/index.html")
     })
 
-    server.listen(SETTINGS.server.port, () => {
+    server.listen(80, () => {
       consola.success(
-        `Doice server listening on ${global.SERVER_IP}:${SETTINGS.server.port}`
+        `Doice server listening on ${global.SERVER_IP}:80`
       );
     });
   }
