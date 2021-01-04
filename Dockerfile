@@ -1,3 +1,4 @@
+ARG network=host
 FROM ubuntu:18.04
 
 RUN apt-get update -y
@@ -12,6 +13,8 @@ RUN apt-get install -y \
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
 RUN apt-get install nodejs -y
+
+RUN npm i -g forever
 
 # Download doice-server and doice-webapp
 RUN git clone https://github.com/DoiceIO/doice-server \
@@ -31,4 +34,4 @@ RUN git clone https://github.com/DoiceIO/doice-server \
 
 EXPOSE 3000
 
-CMD cd doice-server && node app.js
+CMD cd doice-server && forever start app.js

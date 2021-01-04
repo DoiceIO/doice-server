@@ -94,6 +94,8 @@ async function main() {
           { subject: req.body.domainName, altnames: [req.body.domainName] }
         ]
       }))
+
+      process.exit(1)
     })
 
     app.get("**", (req, res) => {
