@@ -3,3 +3,5 @@ node_modules
 .well-known/
 public/
 settings.json
+greenlock.d/
+.greenlockrc

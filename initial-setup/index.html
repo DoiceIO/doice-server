@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Set Up Doice</title>
+</head>
+<body>
+  <h1>Set Up Your Doice Instance</h1>
+  <form id="form">
+    <label>
+      Domain Name
+      <input type="text" id="domain" placeholder="my-domain-name.com">
+      <span>Make sure your domain name is pointed to this server IP address. If you do not confiure a domain name you will not be able to use any WebRTC features (video, audio) capabilities since HTTPS is required.</span>
+    </label>
+    <label>
+      Admin Email
+      <input type="text" id="email" placeholder="john.doe@gmail.com">
+      <span>This is incase your SSL certificate expires.</span>
+    </label>
+    <button type="submit">
+      Submit
+    </button>
+  </form>
+
+  <style>
+    label, input {
+      display: block;
+    }
+
+    label {
+      margin-bottom: 1rem;
+    }
+  </style>
+
+  <script>
+    const form = document.getElementById("form")
+
+    form.addEventListener("submit", e => {
+      e.preventDefault()
+
+      fetch(`${window.location.origin}/admin/init-setup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          domainName: document.getElementById("domain").value,
+          adminEmail: document.getElementById("email").value
+        })
+      })
+    })
+  </script>
+</body>
+</html>

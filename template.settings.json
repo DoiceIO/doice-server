@@ -1,8 +1,11 @@
 {
   "server": {
     "port": 3000,
-    "youtube-api-key": "",
-    "admin-password": "admin"
+    "youtube_api_key": "",
+    "domain_name": "",
+    "admin_email": "",
+    "admin_password": "admin",
+    "is_initial_install": true
   },
   "rooms": {
     "default": {

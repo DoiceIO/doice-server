@@ -7,6 +7,10 @@ const Worker = require("./mediasoup/worker");
 const http = require("http");
 const consola = require("consola");
 
+if (!fs.existsSync("settings.json")) {
+  fs.writeFileSync("settings.json", JSON.stringify({}))
+}
+
 // Create http server if not https
 const server = http.createServer(app);
 const io = require("socket.io")(server);
@@ -42,21 +46,66 @@ async function main() {
   });
 
   global.SETTINGS = {
-    ...JSON.parse(fs.readFileSync("template.settings.json"))
-    // ...JSON.parse(fs.readFileSync("settings.json"))
+    ...JSON.parse(fs.readFileSync("template.settings.json")),
+    ...JSON.parse(fs.readFileSync("settings.json"))
   };
 
-  await Worker.createWorkers();
+  if (!global.SETTINGS.server.is_initial_install) {
+    await Worker.createWorkers();
 
-  createExpressApp();
+    createExpressApp();
+  
+    createSocketApp();
 
-  createSocketApp();
+    if (process.env.dev === "true") {
+      server.listen(SETTINGS.server.port, () => {
+        consola.success(
+          `Doice server listening on ${global.SERVER_IP}:${SETTINGS.server.port}`
+        );
+      });
+    } else {
+      require("greenlock-express").init({
+        packageRoot: __dirname,
+        configDir: "./greenlock.d",
+        cluster: false,
+        maintainerEmail: global.SETTINGS.server.admin_email
+      }).serve(server)
+    }
+  } 
+  
+  else {
+    app.use(cors());
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
 
-  server.listen(SETTINGS.server.port, () => {
-    consola.success(
-      `Doice server listening on 127.0.0.1:${SETTINGS.server.port}`
-    );
-  });
+    app.post("/admin/init-setup", (req, res) => {
+      console.log(req.body)
+      fs.writeFileSync("settings.json", JSON.stringify({
+        server: {
+          port: 443,
+          domain_name: req.body.domainName,
+          admin_email: req.body.adminEmail,
+          is_initial_install: false
+        }
+      }))
+
+      fs.writeFileSync("greenlock.d/config.json", JSON.stringify({
+        sites: [
+          { subject: req.body.domainName, altnames: [req.body.domainName] }
+        ]
+      }))
+    })
+
+    app.get("**", (req, res) => {
+      res.sendFile(__dirname + "/initial-setup/index.html")
+    })
+
+    server.listen(SETTINGS.server.port, () => {
+      consola.success(
+        `Doice server listening on ${global.SERVER_IP}:${SETTINGS.server.port}`
+      );
+    });
+  }
 }
 
 function createExpressApp() {
