@@ -39,7 +39,7 @@
     form.addEventListener("submit", e => {
       e.preventDefault()
 
-      fetch(`${window.location.origin}/admin/init-setup`, {
+      fetch(`${window.location.origin}/api/admin/init-setup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

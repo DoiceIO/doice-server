@@ -50,13 +50,13 @@ async function main() {
     ...JSON.parse(fs.readFileSync("settings.json"))
   };
 
+  await Worker.createWorkers();
+
+  createExpressApp();
+
+  createSocketApp();
+
   if (!global.SETTINGS.server.is_initial_install) {
-    await Worker.createWorkers();
-
-    createExpressApp();
-  
-    createSocketApp();
-
     if (process.env.dev === "true") {
       server.listen(SETTINGS.server.port, () => {
         consola.success(
@@ -74,11 +74,7 @@ async function main() {
   } 
   
   else {
-    app.use(cors());
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
-
-    app.post("/admin/init-setup", (req, res) => {
+    app.post("/api/admin/init-setup", (req, res) => {
       console.log(req.body)
       fs.writeFileSync("settings.json", JSON.stringify({
         server: {
@@ -95,11 +91,8 @@ async function main() {
         ]
       }))
 
-      process.exit(1)
-    })
-
-    app.get("**", (req, res) => {
-      res.sendFile(__dirname + "/initial-setup/index.html")
+      server.close()
+      main()
     })
 
     server.listen(80, () => {
@@ -113,10 +106,20 @@ async function main() {
 function createExpressApp() {
   console.log("****CREATING EXPRESS APP****");
 
+  app.use(cors());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+
   app.use((req, res, next) => {
     // If API method
     if (/^\/api/.test(req.path)) {
       next();
+      return;
+    }
+
+    // If not api method and server is in initial install
+    else if (global.SETTINGS.server.is_initial_install) {
+      res.sendFile(__dirname + "/initial-setup/index.html")
       return;
     }
 
