@@ -12,8 +12,8 @@ if (!fs.existsSync("settings.json")) {
 }
 
 // Create http server if not https
-const server = http.createServer(app);
-const io = require("socket.io")(server);
+let server
+let io
 
 // All workers representing CPU vCores
 global.workers = [];
@@ -54,26 +54,34 @@ async function main() {
 
   createExpressApp();
 
-  createSocketApp();
-
   if (!global.SETTINGS.server.is_initial_install) {
     if (process.env.dev === "true") {
+      server = http.createServer(app);
+
       server.listen(SETTINGS.server.port, () => {
         consola.success(
           `Doice server listening on ${global.SERVER_IP}:${SETTINGS.server.port}`
         );
       });
+
+      io = require("socket.io")(server);
     } else {
-      require("greenlock-express").init({
+      server = require("greenlock-express").init({
         packageRoot: __dirname,
         configDir: "./greenlock.d",
         cluster: false,
         maintainerEmail: global.SETTINGS.server.admin_email
-      }).serve(server)
+      }).serve(app)
+      
+      io = require("socket.io")(server);
     }
+
+    createSocketApp();
   } 
   
   else {
+    server = http.createServer(app);
+
     app.post("/api/admin/init-setup", (req, res) => {
       console.log(req.body)
       fs.writeFileSync("settings.json", JSON.stringify({
