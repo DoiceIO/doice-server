@@ -7,7 +7,7 @@ mediasoup.observer.on("newworker", worker => {
   consola.info(`@newworker: [pid:${worker.pid}]`);
 });
 
-const numWorkers = Object.keys(os.cpus()).length;
+const numWorkers = process.env.DEV ? 1 : Object.keys(os.cpus()).length;
 let lastUsedWorkerIndex = -1;
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
     consola.info("****CREATING MEDIASOUP WORKERS****");
     for (let i = 0; i < numWorkers; i++) {
       const worker = await mediasoup.createWorker({
-        logLevel: "debug",
+        logLevel: "debug"
       });
       workers.push(worker);
     }

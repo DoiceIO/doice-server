@@ -8,12 +8,12 @@ const http = require("http");
 const consola = require("consola");
 
 if (!fs.existsSync("settings.json")) {
-  fs.writeFileSync("settings.json", JSON.stringify({}))
+  fs.writeFileSync("settings.json", JSON.stringify({}));
 }
 
 // Create http server if not https
-let server
-let io
+let server;
+let io;
 
 // All workers representing CPU vCores
 global.workers = [];
@@ -52,10 +52,8 @@ async function main() {
 
   await Worker.createWorkers();
 
-  createExpressApp();
-
   if (!global.SETTINGS.server.is_initial_install) {
-    if (process.env.dev === "true") {
+    if (process.env.DEV === "true") {
       server = http.createServer(app);
 
       server.listen(SETTINGS.server.port, () => {
@@ -66,47 +64,53 @@ async function main() {
 
       io = require("socket.io")(server);
     } else {
-      server = require("greenlock-express").init({
-        packageRoot: __dirname,
-        configDir: "./greenlock.d",
-        cluster: false,
-        maintainerEmail: global.SETTINGS.server.admin_email
-      }).serve(app)
-      
+      server = require("greenlock-express")
+        .init({
+          packageRoot: __dirname,
+          configDir: "./greenlock.d",
+          cluster: false,
+          maintainerEmail: global.SETTINGS.server.admin_email
+        })
+        .serve(app);
+
       io = require("socket.io")(server);
     }
 
     createSocketApp();
-  } 
-  
-  else {
+
+    createExpressApp();
+  } else {
     server = http.createServer(app);
 
     app.post("/api/admin/init-setup", (req, res) => {
-      console.log(req.body)
-      fs.writeFileSync("settings.json", JSON.stringify({
-        server: {
-          port: 443,
-          domain_name: req.body.domainName,
-          admin_email: req.body.adminEmail,
-          is_initial_install: false
-        }
-      }))
+      console.log(req.body);
+      fs.writeFileSync(
+        "settings.json",
+        JSON.stringify({
+          server: {
+            port: 443,
+            domain_name: req.body.domainName,
+            admin_email: req.body.adminEmail,
+            is_initial_install: false
+          }
+        })
+      );
 
-      fs.writeFileSync("greenlock.d/config.json", JSON.stringify({
-        sites: [
-          { subject: req.body.domainName, altnames: [req.body.domainName] }
-        ]
-      }))
+      fs.writeFileSync(
+        "greenlock.d/config.json",
+        JSON.stringify({
+          sites: [
+            { subject: req.body.domainName, altnames: [req.body.domainName] }
+          ]
+        })
+      );
 
-      server.close()
-      main()
-    })
+      server.close();
+      main();
+    });
 
     server.listen(80, () => {
-      consola.success(
-        `Doice server listening on ${global.SERVER_IP}:80`
-      );
+      consola.success(`Doice server listening on ${global.SERVER_IP}:80`);
     });
   }
 }
@@ -127,7 +131,7 @@ function createExpressApp() {
 
     // If not api method and server is in initial install
     else if (global.SETTINGS.server.is_initial_install) {
-      res.sendFile(__dirname + "/initial-setup/index.html")
+      res.sendFile(__dirname + "/initial-setup/index.html");
       return;
     }
 

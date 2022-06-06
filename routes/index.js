@@ -4,6 +4,8 @@ const consola = require("consola");
 const { validateParams } = require("../functions/error-builder");
 
 module.exports = async ({ app, io }) => {
+  console.log(io);
+
   const modules = [];
 
   // Get all modules

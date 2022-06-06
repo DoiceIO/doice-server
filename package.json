@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "serve": "DEBUG=\"mediasoup*\" nodemon app.js",
+    "serve": "DEBUG=\"mediasoup*\" DEV=true nodemon app.js",
     "start": "pm2 start app.js -i max -name=\"SFU-Beta\"",
     "restart": "pm2 restart all"
   },
@@ -25,5 +25,8 @@
     "node-fetch": "^2.6.0",
     "socket.io": "^2.3.0",
     "uniqid": "^5.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
   }
 }
