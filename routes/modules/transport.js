@@ -157,15 +157,15 @@ module.exports = ({ io }) => {
         }
 
         // If max streams of type produced in room
-        if (
-          req.router.$streams[type].length >=
-          SETTINGS.rooms.default.capture[type].maxStreams
-        ) {
-          return {
-            ok: false,
-            error: `Max ${type} streams reached in room ${req.socket.roomId} of ${SETTINGS.rooms.default.capture[type].maxStreams}`
-          };
-        }
+        // if (
+        //   req.router.$streams[type].length >=
+        //   SETTINGS.rooms.default.capture[type].maxStreams
+        // ) {
+        //   return {
+        //     ok: false,
+        //     error: `Max ${type} streams reached in room ${req.socket.roomId} of ${SETTINGS.rooms.default.capture[type].maxStreams}`
+        //   };
+        // }
 
         // Create a producer and get it's id
         const { producer, success, error } = await Transport.produce({
@@ -206,6 +206,8 @@ module.exports = ({ io }) => {
           // Add stream to corresponding streams array
           req.router.$streams[type].push(stream);
         }
+
+        console.log(req.router.$streams, type);
 
         // Respond to client with server producer id
         return {
